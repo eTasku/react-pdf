@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isRotate = exports.isRenderMode = exports.isPdf = exports.isPageNumber = exports.isPageIndex = exports.isPage = exports.isLinkTarget = exports.isLinkService = exports.isFile = exports.isClassName = exports.eventProps = void 0;
+exports.isRotate = exports.isRenderMode = exports.isRef = exports.isPdf = exports.isPageNumber = exports.isPageIndex = exports.isPage = exports.isLinkTarget = exports.isLinkService = exports.isFile = exports.isClassName = exports.eventProps = void 0;
 
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
@@ -149,6 +149,12 @@ var isPdf = _propTypes["default"].oneOfType([_propTypes["default"].shape({
 }), _propTypes["default"].bool]);
 
 exports.isPdf = isPdf;
+
+var isRef = _propTypes["default"].oneOfType([_propTypes["default"].func, _propTypes["default"].shape({
+  current: _propTypes["default"].any
+})]);
+
+exports.isRef = isRef;
 
 var isRenderMode = _propTypes["default"].oneOf(['canvas', 'none', 'svg']);
 
