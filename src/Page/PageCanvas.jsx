@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import mergeRefs from 'merge-refs';
 
 import PageContext from '../PageContext';
 
@@ -123,11 +124,13 @@ export class PageCanvasInternal extends PureComponent {
   }
 
   render() {
+    const { canvasRef } = this.props;
+
     return (
       <canvas
         className="react-pdf__Page__canvas"
         dir="ltr"
-        ref={(ref) => { this.canvasLayer = ref; }}
+        ref={mergeRefs(canvasRef, (ref) => { this.canvasLayer = ref; })}
         style={{
           display: 'block',
           userSelect: 'none',
@@ -138,6 +141,7 @@ export class PageCanvasInternal extends PureComponent {
 }
 
 PageCanvasInternal.propTypes = {
+  canvasRef: isRef,
   onRenderError: PropTypes.func,
   onRenderSuccess: PropTypes.func,
   page: isPage.isRequired,
