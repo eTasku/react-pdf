@@ -29,7 +29,7 @@ import {
   warnOnDev,
 } from './shared/utils';
 
-import { eventProps, isClassName } from './shared/propTypes';
+import { eventProps, isClassName, isRef } from './shared/propTypes';
 
 export default class Document extends PureComponent {
   state = {
@@ -379,7 +379,7 @@ Document.propTypes = {
   className: isClassName,
   error: isFunctionOrNode,
   file: isFile,
-  inputRef: PropTypes.func,
+  inputRef: isRef,
   loading: isFunctionOrNode,
   noData: isFunctionOrNode,
   onItemClick: PropTypes.func,

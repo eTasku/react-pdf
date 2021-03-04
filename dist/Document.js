@@ -527,7 +527,7 @@ Document.propTypes = _objectSpread({}, _propTypes2.eventProps, {
   className: _propTypes2.isClassName,
   error: isFunctionOrNode,
   file: _utils.isFile,
-  inputRef: _propTypes["default"].func,
+  inputRef: _propTypes2.isRef,
   loading: isFunctionOrNode,
   noData: isFunctionOrNode,
   onItemClick: _propTypes["default"].func,

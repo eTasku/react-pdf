@@ -206,7 +206,7 @@ var PageCanvasInternal = /*#__PURE__*/function (_PureComponent) {
 
 exports.PageCanvasInternal = PageCanvasInternal;
 PageCanvasInternal.propTypes = {
-  canvasRef: isRef,
+  canvasRef: _propTypes2.isRef,
   onRenderError: _propTypes["default"].func,
   onRenderSuccess: _propTypes["default"].func,
   page: _propTypes2.isPage.isRequired,

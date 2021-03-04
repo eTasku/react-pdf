@@ -39,6 +39,8 @@ var _makeEventProps = _interopRequireDefault(require("make-event-props"));
 
 var _mergeClassNames = _interopRequireDefault(require("merge-class-names"));
 
+var _mergeRefs = _interopRequireDefault(require("merge-refs"));
+
 var _DocumentContext = _interopRequireDefault(require("./DocumentContext"));
 
 var _PageContext = _interopRequireDefault(require("./PageContext"));
@@ -316,22 +318,14 @@ var PageInternal = /*#__PURE__*/function (_PureComponent) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
       var pageNumber = this.pageNumber;
-      var className = this.props.className;
+      var _this$props3 = this.props,
+          className = _this$props3.className,
+          inputRef = _this$props3.inputRef;
       return /*#__PURE__*/_react["default"].createElement("div", (0, _extends2["default"])({
         className: (0, _mergeClassNames["default"])('react-pdf__Page', className),
         "data-page-number": pageNumber,
-        ref: function ref(_ref2) {
-          var inputRef = _this2.props.inputRef;
-
-          if (inputRef) {
-            inputRef(_ref2);
-          }
-
-          _this2.ref = _ref2;
-        },
+        ref: (0, _mergeRefs["default"])(inputRef, this.ref),
         style: {
           position: 'relative'
         }
@@ -346,17 +340,17 @@ var PageInternal = /*#__PURE__*/function (_PureComponent) {
         return {};
       }
 
-      var _this$props3 = this.props,
-          customTextRenderer = _this$props3.customTextRenderer,
-          onGetAnnotationsError = _this$props3.onGetAnnotationsError,
-          onGetAnnotationsSuccess = _this$props3.onGetAnnotationsSuccess,
-          onGetTextError = _this$props3.onGetTextError,
-          onGetTextSuccess = _this$props3.onGetTextSuccess,
-          onRenderAnnotationLayerError = _this$props3.onRenderAnnotationLayerError,
-          onRenderAnnotationLayerSuccess = _this$props3.onRenderAnnotationLayerSuccess,
-          onRenderError = _this$props3.onRenderError,
-          onRenderSuccess = _this$props3.onRenderSuccess,
-          renderInteractiveForms = _this$props3.renderInteractiveForms;
+      var _this$props4 = this.props,
+          customTextRenderer = _this$props4.customTextRenderer,
+          onGetAnnotationsError = _this$props4.onGetAnnotationsError,
+          onGetAnnotationsSuccess = _this$props4.onGetAnnotationsSuccess,
+          onGetTextError = _this$props4.onGetTextError,
+          onGetTextSuccess = _this$props4.onGetTextSuccess,
+          onRenderAnnotationLayerError = _this$props4.onRenderAnnotationLayerError,
+          onRenderAnnotationLayerSuccess = _this$props4.onRenderAnnotationLayerSuccess,
+          onRenderError = _this$props4.onRenderError,
+          onRenderSuccess = _this$props4.onRenderSuccess,
+          renderInteractiveForms = _this$props4.renderInteractiveForms;
       return {
         customTextRenderer: customTextRenderer,
         onGetAnnotationsError: onGetAnnotationsError,
@@ -413,10 +407,10 @@ var PageInternal = /*#__PURE__*/function (_PureComponent) {
         return null;
       }
 
-      var _this$props4 = this.props,
-          scale = _this$props4.scale,
-          width = _this$props4.width,
-          height = _this$props4.height;
+      var _this$props5 = this.props,
+          scale = _this$props5.scale,
+          width = _this$props5.width,
+          height = _this$props5.height;
       var rotate = this.rotate; // Be default, we'll render page at 100% * scale width.
 
       var pageScale = 1; // Passing scale explicitly null would cause the page not to render
@@ -436,16 +430,16 @@ var PageInternal = /*#__PURE__*/function (_PureComponent) {
   }, {
     key: "eventProps",
     get: function get() {
-      var _this3 = this;
+      var _this2 = this;
 
       return (0, _makeEventProps["default"])(this.props, function () {
-        var page = _this3.state.page;
+        var page = _this2.state.page;
 
         if (!page) {
           return page;
         }
 
-        return (0, _utils.makePageCallback)(page, _this3.scale);
+        return (0, _utils.makePageCallback)(page, _this2.scale);
       });
     }
   }, {
@@ -484,7 +478,7 @@ PageInternal.propTypes = _objectSpread({}, _propTypes2.eventProps, {
   customTextRenderer: _propTypes["default"].func,
   error: isFunctionOrNode,
   height: _propTypes["default"].number,
-  inputRef: _propTypes["default"].func,
+  inputRef: _propTypes2.isRef,
   loading: isFunctionOrNode,
   noData: isFunctionOrNode,
   onGetTextError: _propTypes["default"].func,

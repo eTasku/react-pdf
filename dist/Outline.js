@@ -235,7 +235,7 @@ var OutlineInternal = /*#__PURE__*/function (_PureComponent) {
 exports.OutlineInternal = OutlineInternal;
 OutlineInternal.propTypes = _objectSpread({
   className: _propTypes2.isClassName,
-  inputRef: _propTypes["default"].func,
+  inputRef: _propTypes2.isRef,
   onItemClick: _propTypes["default"].func,
   onLoadError: _propTypes["default"].func,
   onLoadSuccess: _propTypes["default"].func,

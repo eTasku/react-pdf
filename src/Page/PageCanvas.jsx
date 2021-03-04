@@ -11,7 +11,7 @@ import {
   makePageCallback,
 } from '../shared/utils';
 
-import { isPage, isRotate } from '../shared/propTypes';
+import { isPage, isRef, isRotate } from '../shared/propTypes';
 
 export class PageCanvasInternal extends PureComponent {
   componentDidMount() {
