@@ -1,4 +1,4 @@
-import * as pdfjs from 'pdfjs-dist/legacy/build/pdf';
+import * as pdfjs from 'pdfjs-dist/legacy';
 
 import Document from './Document';
 import Outline from './Outline';
