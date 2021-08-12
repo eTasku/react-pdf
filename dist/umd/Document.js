@@ -39,7 +39,7 @@ var _makeCancellablePromise = _interopRequireDefault(require("make-cancellable-p
 
 var _mergeClassNames = _interopRequireDefault(require("merge-class-names"));
 
-var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy"));
+var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy/build"));
 
 var _DocumentContext = _interopRequireDefault(require("./DocumentContext"));
 
