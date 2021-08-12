@@ -127,9 +127,7 @@ var Document = /*#__PURE__*/function (_PureComponent) {
               pdf: pdf
             };
           }, _this.onLoadSuccess);
-        })["catch"](function (error) {
-          _this.onLoadError(error);
-        });
+        }, _this.onLoadError);
       })["catch"](function (error) {
         _this.onSourceError(error);
       });
