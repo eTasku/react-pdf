@@ -30,7 +30,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var pdfjs = _interopRequireWildcard(require("pdfjs-dist"));
+var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy/build/pdf"));
 
 var _PageContext = _interopRequireDefault(require("../PageContext"));
 
