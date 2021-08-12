@@ -27,11 +27,11 @@ Object.defineProperty(exports, "Page", {
 });
 exports.pdfjs = void 0;
 
-var pdfjs = _interopRequireWildcard(require("pdfjs-dist"));
+var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy"));
 
 exports.pdfjs = pdfjs;
 
-var _pdf = _interopRequireDefault(require("file-loader!pdfjs-dist/es5/build/pdf.worker"));
+var _pdf = _interopRequireDefault(require("file-loader!pdfjs-dist/legacy/build/pdf.worker"));
 
 var _Document = _interopRequireDefault(require("./Document"));
 

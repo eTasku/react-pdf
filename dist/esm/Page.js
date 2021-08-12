@@ -1,6 +1,4 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _assertThisInitialized from "@babel/runtime/helpers/esm/assertThisInitialized";
@@ -32,7 +30,7 @@ import TextLayer from './Page/TextLayer';
 import AnnotationLayer from './Page/AnnotationLayer';
 import { cancelRunningTask, errorOnDev, isProvided, makePageCallback } from './shared/utils';
 import { eventProps, isClassName, isPageIndex, isPageNumber, isPdf, isRef, isRenderMode, isRotate } from './shared/propTypes';
-var defaultScale = 1.0;
+var defaultScale = 1;
 export var PageInternal = /*#__PURE__*/function (_PureComponent) {
   _inherits(PageInternal, _PureComponent);
 
@@ -68,66 +66,39 @@ export var PageInternal = /*#__PURE__*/function (_PureComponent) {
       if (onLoadError) onLoadError(error);
     });
 
-    _defineProperty(_assertThisInitialized(_this), "loadPage", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      var pdf, pageNumber, cancellable, page;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              pdf = _this.props.pdf;
-              pageNumber = _this.getPageNumber();
+    _defineProperty(_assertThisInitialized(_this), "loadPage", function () {
+      var pdf = _this.props.pdf;
 
-              if (pageNumber) {
-                _context.next = 4;
-                break;
-              }
+      var pageNumber = _this.getPageNumber();
 
-              return _context.abrupt("return");
+      if (!pageNumber) {
+        return;
+      }
 
-            case 4:
-              _this.setState(function (prevState) {
-                if (!prevState.page) {
-                  return null;
-                }
-
-                return {
-                  page: null
-                };
-              });
-
-              _context.prev = 5;
-              cancellable = makeCancellable(pdf.getPage(pageNumber));
-              _this.runningTask = cancellable;
-              _context.next = 10;
-              return cancellable.promise;
-
-            case 10:
-              page = _context.sent;
-
-              _this.setState({
-                page: page
-              }, _this.onLoadSuccess);
-
-              _context.next = 18;
-              break;
-
-            case 14:
-              _context.prev = 14;
-              _context.t0 = _context["catch"](5);
-
-              _this.setState({
-                page: false
-              });
-
-              _this.onLoadError(_context.t0);
-
-            case 18:
-            case "end":
-              return _context.stop();
-          }
+      _this.setState(function (prevState) {
+        if (!prevState.page) {
+          return null;
         }
-      }, _callee, null, [[5, 14]]);
-    })));
+
+        return {
+          page: null
+        };
+      });
+
+      var cancellable = makeCancellable(pdf.getPage(pageNumber));
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (page) {
+        _this.setState({
+          page: page
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.setState({
+          page: false
+        });
+
+        _this.onLoadError(error);
+      });
+    });
 
     return _this;
   }

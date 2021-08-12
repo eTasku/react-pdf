@@ -15,10 +15,6 @@ var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/h
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -66,154 +62,82 @@ var OutlineItemInternal = /*#__PURE__*/function (_PureComponent) {
     }
 
     _this = _super.call.apply(_super, [this].concat(args));
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getDestination", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var _this$props, item, pdf;
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getDestination", function () {
+      return new Promise(function (resolve, reject) {
+        var _this$props = _this.props,
+            item = _this$props.item,
+            pdf = _this$props.pdf;
 
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _this$props = _this.props, item = _this$props.item, pdf = _this$props.pdf;
-
-              if ((0, _utils.isDefined)(_this.destination)) {
-                _context.next = 9;
-                break;
-              }
-
-              if (!(typeof item.dest === 'string')) {
-                _context.next = 8;
-                break;
-              }
-
-              _context.next = 5;
-              return pdf.getDestination(item.dest);
-
-            case 5:
-              _this.destination = _context.sent;
-              _context.next = 9;
-              break;
-
-            case 8:
-              _this.destination = item.dest;
-
-            case 9:
-              return _context.abrupt("return", _this.destination);
-
-            case 10:
-            case "end":
-              return _context.stop();
+        if (!(0, _utils.isDefined)(_this.destination)) {
+          if (typeof item.dest === 'string') {
+            pdf.getDestination(item.dest).then(resolve)["catch"](reject);
+          } else {
+            resolve(item.dest);
           }
         }
-      }, _callee);
-    })));
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getPageIndex", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
-      var pdf, destination, _destination, ref;
 
-      return _regenerator["default"].wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              pdf = _this.props.pdf;
+        return _this.destination;
+      }).then(function (destination) {
+        _this.destination = destination;
+        return destination;
+      });
+    });
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getPageIndex", function () {
+      return new Promise(function (resolve, reject) {
+        var pdf = _this.props.pdf;
 
-              if ((0, _utils.isDefined)(_this.pageIndex)) {
-                _context2.next = 10;
-                break;
-              }
-
-              _context2.next = 4;
-              return _this.getDestination();
-
-            case 4:
-              destination = _context2.sent;
-
-              if (!destination) {
-                _context2.next = 10;
-                break;
-              }
-
-              _destination = (0, _slicedToArray2["default"])(destination, 1), ref = _destination[0];
-              _context2.next = 9;
-              return pdf.getPageIndex(new _Ref["default"](ref));
-
-            case 9:
-              _this.pageIndex = _context2.sent;
-
-            case 10:
-              return _context2.abrupt("return", _this.pageIndex);
-
-            case 11:
-            case "end":
-              return _context2.stop();
-          }
+        if ((0, _utils.isDefined)(_this.pageIndex)) {
+          resolve(_this.pageIndex);
         }
-      }, _callee2);
-    })));
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getPageNumber", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3() {
-      return _regenerator["default"].wrap(function _callee3$(_context3) {
-        while (1) {
-          switch (_context3.prev = _context3.next) {
-            case 0:
-              if ((0, _utils.isDefined)(_this.pageNumber)) {
-                _context3.next = 5;
-                break;
-              }
 
-              _context3.next = 3;
-              return _this.getPageIndex();
-
-            case 3:
-              _context3.t0 = _context3.sent;
-              _this.pageNumber = _context3.t0 + 1;
-
-            case 5:
-              return _context3.abrupt("return", _this.pageNumber);
-
-            case 6:
-            case "end":
-              return _context3.stop();
+        _this.getDestination().then(function (destination) {
+          if (!destination) {
+            return;
           }
+
+          var _destination = (0, _slicedToArray2["default"])(destination, 1),
+              ref = _destination[0];
+
+          pdf.getPageIndex(new _Ref["default"](ref)).then(resolve)["catch"](reject);
+        });
+      }).then(function (pageIndex) {
+        _this.pageIndex = pageIndex;
+        return _this.pageIndex;
+      });
+    });
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "getPageNumber", function () {
+      return new Promise(function (resolve, reject) {
+        if ((0, _utils.isDefined)(_this.pageNumber)) {
+          resolve(_this.pageNumber);
         }
-      }, _callee3);
-    })));
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onClick", /*#__PURE__*/function () {
-      var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(event) {
-        var onClick, pageIndex, pageNumber;
-        return _regenerator["default"].wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                onClick = _this.props.onClick;
-                event.preventDefault();
-                _context4.next = 4;
-                return _this.getPageIndex();
 
-              case 4:
-                pageIndex = _context4.sent;
-                _context4.next = 7;
-                return _this.getPageNumber();
+        _this.getPageIndex().then(function (pageIndex) {
+          resolve(pageIndex + 1);
+        })["catch"](reject);
+      }).then(function (pageNumber) {
+        _this.pageNumber = pageNumber;
+        return pageNumber;
+      });
+    });
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onClick", function (event) {
+      var onClick = _this.props.onClick;
+      event.preventDefault();
 
-              case 7:
-                pageNumber = _context4.sent;
+      if (!onClick) {
+        return false;
+      }
 
-                if (onClick) {
-                  onClick({
-                    pageIndex: pageIndex,
-                    pageNumber: pageNumber
-                  });
-                }
+      return Promise.all([_this.getPageIndex(), _this.getPageNumber()]).then(function (_ref) {
+        var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
+            pageIndex = _ref2[0],
+            pageNumber = _ref2[1];
 
-              case 9:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4);
-      }));
-
-      return function (_x) {
-        return _ref4.apply(this, arguments);
-      };
-    }());
+        onClick({
+          pageIndex: pageIndex,
+          pageNumber: pageNumber
+        });
+      });
+    });
     return _this;
   }
 

@@ -20,93 +20,94 @@ export var isProduction = process.env.NODE_ENV === 'production';
  * @param {*} variable Variable to check
  */
 
-export var isDefined = function isDefined(variable) {
+export function isDefined(variable) {
   return typeof variable !== 'undefined';
-};
+}
 /**
  * Checks whether a variable is defined and not null.
  *
  * @param {*} variable Variable to check
  */
 
-export var isProvided = function isProvided(variable) {
+export function isProvided(variable) {
   return isDefined(variable) && variable !== null;
-};
+}
 /**
  * Checkes whether a variable provided is a string.
  *
  * @param {*} variable Variable to check
  */
 
-export var isString = function isString(variable) {
+export function isString(variable) {
   return typeof variable === 'string';
-};
+}
 /**
  * Checks whether a variable provided is an ArrayBuffer.
  *
  * @param {*} variable Variable to check
  */
 
-export var isArrayBuffer = function isArrayBuffer(variable) {
+export function isArrayBuffer(variable) {
   return variable instanceof ArrayBuffer;
-};
+}
 /**
  * Checkes whether a variable provided is a Blob.
  *
  * @param {*} variable Variable to check
  */
 
-export var isBlob = function isBlob(variable) {
+export function isBlob(variable) {
   if (!isBrowser) {
     throw new Error('Attempted to check if a variable is a Blob on a non-browser environment.');
   }
 
   return variable instanceof Blob;
-};
+}
 /**
  * Checkes whether a variable provided is a File.
  *
  * @param {*} variable Variable to check
  */
 
-export var isFile = function isFile(variable) {
+export function isFile(variable) {
   if (!isBrowser) {
     throw new Error('Attempted to check if a variable is a File on a non-browser environment.');
   }
 
   return variable instanceof File;
-};
+}
 /**
  * Checks whether a string provided is a data URI.
  *
  * @param {string} str String to check
  */
 
-export var isDataURI = function isDataURI(str) {
+export function isDataURI(str) {
   return isString(str) && /^data:/.test(str);
-};
-export var dataURItoByteString = function dataURItoByteString(dataURI) {
+}
+export function dataURItoByteString(dataURI) {
   if (!isDataURI(dataURI)) {
     throw new Error('Invalid data URI.');
   }
 
-  var _dataURI$split = dataURI.split(';'),
+  var _dataURI$split = dataURI.split(','),
       _dataURI$split2 = _slicedToArray(_dataURI$split, 2),
+      headersString = _dataURI$split2[0],
+      dataString = _dataURI$split2[1];
 
-  /* header */
-  dataString = _dataURI$split2[1];
+  var headers = headersString.split(';');
 
-  if (dataString.indexOf('base64') === 0) {
-    return atob(dataString.slice(7));
+  if (headers.indexOf('base64') !== -1) {
+    return atob(dataString);
   }
 
   return unescape(dataString);
-};
-export var getPixelRatio = function getPixelRatio() {
+}
+export function getPixelRatio() {
   return isBrowser && window.devicePixelRatio || 1;
-};
+}
 
-var consoleOnDev = function consoleOnDev(method) {
+function consoleOnDev(method) {
   if (!isProduction) {
     var _console;
 
@@ -117,31 +118,31 @@ var consoleOnDev = function consoleOnDev(method) {
     // eslint-disable-next-line no-console
     (_console = console)[method].apply(_console, message);
   }
-};
+}
 
-export var warnOnDev = function warnOnDev() {
+export function warnOnDev() {
   for (var _len2 = arguments.length, message = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
     message[_key2] = arguments[_key2];
   }
 
-  return consoleOnDev.apply(void 0, ['warn'].concat(message));
-};
-export var errorOnDev = function errorOnDev() {
+  consoleOnDev.apply(void 0, ['warn'].concat(message));
+}
+export function errorOnDev() {
   for (var _len3 = arguments.length, message = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
     message[_key3] = arguments[_key3];
   }
 
-  return consoleOnDev.apply(void 0, ['error'].concat(message));
-};
-export var displayCORSWarning = function displayCORSWarning() {
+  consoleOnDev.apply(void 0, ['error'].concat(message));
+}
+export function displayCORSWarning() {
   if (isLocalFileSystem) {
     warnOnDev('Loading PDF as base64 strings/URLs might not work on protocols other than HTTP/HTTPS. On Google Chrome, you can use --allow-file-access-from-files flag for debugging purposes.');
   }
-};
-export var cancelRunningTask = function cancelRunningTask(runningTask) {
+}
+export function cancelRunningTask(runningTask) {
   if (runningTask && runningTask.cancel) runningTask.cancel();
-};
-export var makePageCallback = function makePageCallback(page, scale) {
+}
+export function makePageCallback(page, scale) {
   Object.defineProperty(page, 'width', {
     get: function get() {
       return this.view[2] * scale;
@@ -167,11 +168,11 @@ export var makePageCallback = function makePageCallback(page, scale) {
     configurable: true
   });
   return page;
-};
-export var isCancelException = function isCancelException(error) {
+}
+export function isCancelException(error) {
   return error.name === 'RenderingCancelledException';
-};
-export var loadFromFile = function loadFromFile(file) {
+}
+export function loadFromFile(file) {
   return new Promise(function (resolve, reject) {
     var reader = new FileReader();
 
@@ -201,4 +202,4 @@ export var loadFromFile = function loadFromFile(file) {
     reader.readAsArrayBuffer(file);
     return null;
   });
-};
+}

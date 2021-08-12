@@ -11,10 +11,6 @@ exports["default"] = exports.OutlineInternal = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -75,53 +71,29 @@ var OutlineInternal = /*#__PURE__*/function (_PureComponent) {
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "state", {
       outline: null
     });
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadOutline", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var pdf, cancellable, outline;
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              pdf = _this.props.pdf;
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadOutline", function () {
+      var pdf = _this.props.pdf;
 
-              _this.setState(function (prevState) {
-                if (!prevState.outline) {
-                  return null;
-                }
-
-                return {
-                  outline: null
-                };
-              });
-
-              _context.prev = 2;
-              cancellable = (0, _makeCancellablePromise["default"])(pdf.getOutline());
-              _this.runningTask = cancellable;
-              _context.next = 7;
-              return cancellable.promise;
-
-            case 7:
-              outline = _context.sent;
-
-              _this.setState({
-                outline: outline
-              }, _this.onLoadSuccess);
-
-              _context.next = 14;
-              break;
-
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](2);
-
-              _this.onLoadError(_context.t0);
-
-            case 14:
-            case "end":
-              return _context.stop();
-          }
+      _this.setState(function (prevState) {
+        if (!prevState.outline) {
+          return null;
         }
-      }, _callee, null, [[2, 11]]);
-    })));
+
+        return {
+          outline: null
+        };
+      });
+
+      var cancellable = (0, _makeCancellablePromise["default"])(pdf.getOutline());
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (outline) {
+        _this.setState({
+          outline: outline
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.onLoadError(error);
+      });
+    });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onLoadSuccess", function () {
       var onLoadSuccess = _this.props.onLoadSuccess;
       var outline = _this.state.outline;
@@ -136,9 +108,9 @@ var OutlineInternal = /*#__PURE__*/function (_PureComponent) {
       var onLoadError = _this.props.onLoadError;
       if (onLoadError) onLoadError(error);
     });
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onItemClick", function (_ref2) {
-      var pageIndex = _ref2.pageIndex,
-          pageNumber = _ref2.pageNumber;
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onItemClick", function (_ref) {
+      var pageIndex = _ref.pageIndex,
+          pageNumber = _ref.pageNumber;
       var onItemClick = _this.props.onItemClick;
 
       if (onItemClick) {

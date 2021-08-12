@@ -1,6 +1,4 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _assertThisInitialized from "@babel/runtime/helpers/esm/assertThisInitialized";
@@ -40,44 +38,20 @@ export var TextLayerInternal = /*#__PURE__*/function (_PureComponent) {
       textItems: null
     });
 
-    _defineProperty(_assertThisInitialized(_this), "loadTextItems", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      var page, cancellable, _yield$cancellable$pr, textItems;
+    _defineProperty(_assertThisInitialized(_this), "loadTextItems", function () {
+      var page = _this.props.page;
+      var cancellable = makeCancellable(page.getTextContent());
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (_ref) {
+        var textItems = _ref.items;
 
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              page = _this.props.page;
-              _context.prev = 1;
-              cancellable = makeCancellable(page.getTextContent());
-              _this.runningTask = cancellable;
-              _context.next = 6;
-              return cancellable.promise;
-
-            case 6:
-              _yield$cancellable$pr = _context.sent;
-              textItems = _yield$cancellable$pr.items;
-
-              _this.setState({
-                textItems: textItems
-              }, _this.onLoadSuccess);
-
-              _context.next = 14;
-              break;
-
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](1);
-
-              _this.onLoadError(_context.t0);
-
-            case 14:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[1, 11]]);
-    })));
+        _this.setState({
+          textItems: textItems
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.onLoadError(error);
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "onLoadSuccess", function () {
       var onGetTextSuccess = _this.props.onGetTextSuccess;

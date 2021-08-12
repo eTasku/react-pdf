@@ -31,7 +31,7 @@ var eventProps = function () {
 
 exports.eventProps = eventProps;
 var fileTypes = [_propTypes["default"].string, _propTypes["default"].instanceOf(ArrayBuffer), _propTypes["default"].shape({
-  data: _propTypes["default"].object,
+  data: _propTypes["default"].oneOfType([_propTypes["default"].object, _propTypes["default"].string]),
   httpHeaders: _propTypes["default"].object,
   range: _propTypes["default"].object,
   url: _propTypes["default"].string,

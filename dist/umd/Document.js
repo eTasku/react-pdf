@@ -15,10 +15,6 @@ var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/h
 
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -43,7 +39,7 @@ var _makeCancellablePromise = _interopRequireDefault(require("make-cancellable-p
 
 var _mergeClassNames = _interopRequireDefault(require("merge-class-names"));
 
-var pdfjs = _interopRequireWildcard(require("pdfjs-dist"));
+var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy"));
 
 var _DocumentContext = _interopRequireDefault(require("./DocumentContext"));
 
@@ -111,98 +107,58 @@ var Document = /*#__PURE__*/function (_PureComponent) {
       }
     });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "linkService", new _LinkService["default"]());
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadDocument", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var source, _this$props, options, onLoadProgress, onPassword, cancellable, pdf;
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadDocument", function () {
+      _this.findDocumentSource().then(function (source) {
+        _this.onSourceSuccess();
 
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              source = null;
-              _context.prev = 1;
-              _context.next = 4;
-              return _this.findDocumentSource();
-
-            case 4:
-              source = _context.sent;
-
-              _this.onSourceSuccess();
-
-              _context.next = 11;
-              break;
-
-            case 8:
-              _context.prev = 8;
-              _context.t0 = _context["catch"](1);
-
-              _this.onSourceError(_context.t0);
-
-            case 11:
-              if (source) {
-                _context.next = 13;
-                break;
-              }
-
-              return _context.abrupt("return");
-
-            case 13:
-              _this.setState(function (prevState) {
-                if (!prevState.pdf) {
-                  return null;
-                }
-
-                return {
-                  pdf: null
-                };
-              });
-
-              _this$props = _this.props, options = _this$props.options, onLoadProgress = _this$props.onLoadProgress, onPassword = _this$props.onPassword;
-              _context.prev = 15;
-              // If another rendering is in progress, let's cancel it
-              (0, _utils.cancelRunningTask)(_this.runningTask); // If another loading is in progress, let's destroy it
-
-              if (_this.loadingTask) _this.loadingTask.destroy();
-              _this.loadingTask = pdfjs.getDocument(_objectSpread(_objectSpread({}, source), options));
-              _this.loadingTask.onPassword = onPassword;
-
-              if (onLoadProgress) {
-                _this.loadingTask.onProgress = onLoadProgress;
-              }
-
-              cancellable = (0, _makeCancellablePromise["default"])(_this.loadingTask.promise);
-              _this.runningTask = cancellable;
-              _context.next = 25;
-              return cancellable.promise;
-
-            case 25:
-              pdf = _context.sent;
-
-              _this.setState(function (prevState) {
-                if (prevState.pdf && prevState.pdf.fingerprint === pdf.fingerprint) {
-                  return null;
-                }
-
-                return {
-                  pdf: pdf
-                };
-              }, _this.onLoadSuccess);
-
-              _context.next = 32;
-              break;
-
-            case 29:
-              _context.prev = 29;
-              _context.t1 = _context["catch"](15);
-
-              _this.onLoadError(_context.t1);
-
-            case 32:
-            case "end":
-              return _context.stop();
-          }
+        if (!source) {
+          return;
         }
-      }, _callee, null, [[1, 8], [15, 29]]);
-    })));
+
+        _this.setState(function (prevState) {
+          if (!prevState.pdf) {
+            return null;
+          }
+
+          return {
+            pdf: null
+          };
+        });
+
+        var _this$props = _this.props,
+            options = _this$props.options,
+            onLoadProgress = _this$props.onLoadProgress,
+            onPassword = _this$props.onPassword; // If another rendering is in progress, let's cancel it
+
+        (0, _utils.cancelRunningTask)(_this.runningTask); // If another loading is in progress, let's destroy it
+
+        if (_this.loadingTask) _this.loadingTask.destroy();
+        _this.loadingTask = pdfjs.getDocument(_objectSpread(_objectSpread({}, source), options));
+        _this.loadingTask.onPassword = onPassword;
+
+        if (onLoadProgress) {
+          _this.loadingTask.onProgress = onLoadProgress;
+        }
+
+        var cancellable = (0, _makeCancellablePromise["default"])(_this.loadingTask.promise);
+        _this.runningTask = cancellable;
+        cancellable.promise.then(function (pdf) {
+          _this.setState(function (prevState) {
+            if (prevState.pdf && prevState.pdf.fingerprint === pdf.fingerprint) {
+              return null;
+            }
+
+            return {
+              pdf: pdf
+            };
+          }, _this.onLoadSuccess);
+        })["catch"](function (error) {
+          _this.onLoadError(error);
+        });
+      })["catch"](function (error) {
+        _this.onSourceError(error);
+      });
+    });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "setupLinkService", function () {
       _this.linkService.setViewer(_this.viewer);
 
@@ -256,130 +212,88 @@ var Document = /*#__PURE__*/function (_PureComponent) {
       var onLoadError = _this.props.onLoadError;
       if (onLoadError) onLoadError(error);
     });
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "findDocumentSource", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
-      var file, fileByteString, url, otherParams, _fileByteString;
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "findDocumentSource", function () {
+      return new Promise(function (resolve) {
+        var file = _this.props.file;
 
-      return _regenerator["default"].wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              file = _this.props.file;
+        if (!file) {
+          resolve(null);
+        } // File is a string
 
-              if (file) {
-                _context2.next = 3;
-                break;
-              }
 
-              return _context2.abrupt("return", null);
-
-            case 3:
-              if (!(typeof file === 'string')) {
-                _context2.next = 9;
-                break;
-              }
-
-              if (!(0, _utils.isDataURI)(file)) {
-                _context2.next = 7;
-                break;
-              }
-
-              fileByteString = (0, _utils.dataURItoByteString)(file);
-              return _context2.abrupt("return", {
-                data: fileByteString
-              });
-
-            case 7:
-              (0, _utils.displayCORSWarning)();
-              return _context2.abrupt("return", {
-                url: file
-              });
-
-            case 9:
-              if (!(file instanceof PDFDataRangeTransport)) {
-                _context2.next = 11;
-                break;
-              }
-
-              return _context2.abrupt("return", {
-                range: file
-              });
-
-            case 11:
-              if (!(0, _utils.isArrayBuffer)(file)) {
-                _context2.next = 13;
-                break;
-              }
-
-              return _context2.abrupt("return", {
-                data: file
-              });
-
-            case 13:
-              if (!_utils.isBrowser) {
-                _context2.next = 19;
-                break;
-              }
-
-              if (!((0, _utils.isBlob)(file) || (0, _utils.isFile)(file))) {
-                _context2.next = 19;
-                break;
-              }
-
-              _context2.next = 17;
-              return (0, _utils.loadFromFile)(file);
-
-            case 17:
-              _context2.t0 = _context2.sent;
-              return _context2.abrupt("return", {
-                data: _context2.t0
-              });
-
-            case 19:
-              if (!((0, _typeof2["default"])(file) !== 'object')) {
-                _context2.next = 21;
-                break;
-              }
-
-              throw new Error('Invalid parameter in file, need either Uint8Array, string or a parameter object');
-
-            case 21:
-              if (!(!file.url && !file.data && !file.range)) {
-                _context2.next = 23;
-                break;
-              }
-
-              throw new Error('Invalid parameter object: need either .data, .range or .url');
-
-            case 23:
-              if (!(typeof file.url === 'string')) {
-                _context2.next = 29;
-                break;
-              }
-
-              if (!(0, _utils.isDataURI)(file.url)) {
-                _context2.next = 28;
-                break;
-              }
-
-              url = file.url, otherParams = (0, _objectWithoutProperties2["default"])(file, ["url"]);
-              _fileByteString = (0, _utils.dataURItoByteString)(url);
-              return _context2.abrupt("return", _objectSpread({
-                data: _fileByteString
-              }, otherParams));
-
-            case 28:
-              (0, _utils.displayCORSWarning)();
-
-            case 29:
-              return _context2.abrupt("return", file);
-
-            case 30:
-            case "end":
-              return _context2.stop();
+        if (typeof file === 'string') {
+          if ((0, _utils.isDataURI)(file)) {
+            var fileByteString = (0, _utils.dataURItoByteString)(file);
+            resolve({
+              data: fileByteString
+            });
           }
+
+          (0, _utils.displayCORSWarning)();
+          resolve({
+            url: file
+          });
+        } // File is PDFDataRangeTransport
+
+
+        if (file instanceof PDFDataRangeTransport) {
+          resolve({
+            range: file
+          });
+        } // File is an ArrayBuffer
+
+
+        if ((0, _utils.isArrayBuffer)(file)) {
+          resolve({
+            data: file
+          });
         }
-      }, _callee2);
-    })));
+        /**
+         * The cases below are browser-only.
+         * If you're running on a non-browser environment, these cases will be of no use.
+         */
+
+
+        if (_utils.isBrowser) {
+          // File is a Blob
+          if ((0, _utils.isBlob)(file) || (0, _utils.isFile)(file)) {
+            (0, _utils.loadFromFile)(file).then(function (data) {
+              resolve({
+                data: data
+              });
+            });
+            return;
+          }
+        } // At this point, file must be an object
+
+
+        if ((0, _typeof2["default"])(file) !== 'object') {
+          throw new Error('Invalid parameter in file, need either Uint8Array, string or a parameter object');
+        }
+
+        if (!file.url && !file.data && !file.range) {
+          throw new Error('Invalid parameter object: need either .data, .range or .url');
+        } // File .url is a string
+
+
+        if (typeof file.url === 'string') {
+          if ((0, _utils.isDataURI)(file.url)) {
+            var url = file.url,
+                otherParams = (0, _objectWithoutProperties2["default"])(file, ["url"]);
+
+            var _fileByteString = (0, _utils.dataURItoByteString)(url);
+
+            resolve(_objectSpread({
+              data: _fileByteString
+            }, otherParams));
+          }
+
+          (0, _utils.displayCORSWarning)();
+        }
+
+        resolve(file);
+      });
+    });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "registerPage", function (pageIndex, ref) {
       _this.pages[pageIndex] = ref;
     });

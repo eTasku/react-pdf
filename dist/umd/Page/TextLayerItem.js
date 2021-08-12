@@ -14,10 +14,6 @@ var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends")
 
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -80,97 +76,51 @@ var TextLayerItemInternal = /*#__PURE__*/function (_PureComponent) {
     }
   }, {
     key: "getFontData",
-    value: function () {
-      var _getFontData = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(fontName) {
-        var page, font;
-        return _regenerator["default"].wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                page = this.props.page;
-                _context.next = 3;
-                return new Promise(function (resolve) {
-                  page.commonObjs.get(fontName, resolve);
-                });
-
-              case 3:
-                font = _context.sent;
-                return _context.abrupt("return", font);
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function getFontData(_x) {
-        return _getFontData.apply(this, arguments);
-      }
-
-      return getFontData;
-    }()
+    value: function getFontData(fontName) {
+      var page = this.props.page;
+      return new Promise(function (resolve) {
+        page.commonObjs.get(fontName, resolve);
+      });
+    }
   }, {
     key: "alignTextItem",
-    value: function () {
-      var _alignTextItem = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2() {
-        var element, _this$props, fontName, scale, width, fontData, fallbackFontName, targetWidth, actualWidth, transform, ascent;
+    value: function alignTextItem() {
+      var _this2 = this;
 
-        return _regenerator["default"].wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                element = this.item;
+      var element = this.item;
 
-                if (element) {
-                  _context2.next = 3;
-                  break;
-                }
-
-                return _context2.abrupt("return");
-
-              case 3:
-                element.style.transform = '';
-                _this$props = this.props, fontName = _this$props.fontName, scale = _this$props.scale, width = _this$props.width;
-                element.style.fontFamily = "".concat(fontName, ", sans-serif");
-                _context2.next = 8;
-                return this.getFontData(fontName);
-
-              case 8:
-                fontData = _context2.sent;
-                fallbackFontName = fontData ? fontData.fallbackName : 'sans-serif';
-                element.style.fontFamily = "".concat(fontName, ", ").concat(fallbackFontName);
-                targetWidth = width * scale;
-                actualWidth = this.getElementWidth(element);
-                transform = "scaleX(".concat(targetWidth / actualWidth, ")");
-                ascent = fontData ? fontData.ascent : 0;
-
-                if (ascent) {
-                  transform += " translateY(".concat((1 - ascent) * 100, "%)");
-                }
-
-                element.style.transform = transform;
-                element.style.WebkitTransform = transform;
-
-              case 18:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function alignTextItem() {
-        return _alignTextItem.apply(this, arguments);
+      if (!element) {
+        return;
       }
 
-      return alignTextItem;
-    }()
+      element.style.transform = '';
+      var _this$props = this.props,
+          fontName = _this$props.fontName,
+          scale = _this$props.scale,
+          width = _this$props.width;
+      element.style.fontFamily = "".concat(fontName, ", sans-serif");
+      this.getFontData(fontName).then(function (fontData) {
+        var fallbackFontName = fontData ? fontData.fallbackName : 'sans-serif';
+        element.style.fontFamily = "".concat(fontName, ", ").concat(fallbackFontName);
+        var targetWidth = width * scale;
+
+        var actualWidth = _this2.getElementWidth(element);
+
+        var transform = "scaleX(".concat(targetWidth / actualWidth, ")");
+        var ascent = fontData ? fontData.ascent : 0;
+
+        if (ascent) {
+          transform += " translateY(".concat((1 - ascent) * 100, "%)");
+        }
+
+        element.style.transform = transform;
+        element.style.WebkitTransform = transform;
+      });
+    }
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var fontSize = this.fontSize,
           top = this.top,
@@ -181,7 +131,7 @@ var TextLayerItemInternal = /*#__PURE__*/function (_PureComponent) {
           text = _this$props2.str;
       return /*#__PURE__*/_react["default"].createElement("span", {
         ref: function ref(_ref) {
-          _this2.item = _ref;
+          _this3.item = _ref;
         },
         style: {
           height: '1em',

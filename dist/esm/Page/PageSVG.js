@@ -145,7 +145,7 @@ PageSVGInternal.propTypes = {
   onRenderSuccess: PropTypes.func,
   page: isPage.isRequired,
   rotate: isRotate,
-  scale: PropTypes.number
+  scale: PropTypes.number.isRequired
 };
 export default function PageSVG(props) {
   return /*#__PURE__*/React.createElement(PageContext.Consumer, null, function (context) {

@@ -210,7 +210,7 @@ PageCanvasInternal.propTypes = {
   page: _propTypes2.isPage.isRequired,
   renderInteractiveForms: _propTypes["default"].bool,
   rotate: _propTypes2.isRotate,
-  scale: _propTypes["default"].number
+  scale: _propTypes["default"].number.isRequired
 };
 
 function PageCanvas(props) {

@@ -1,6 +1,4 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _assertThisInitialized from "@babel/runtime/helpers/esm/assertThisInitialized";
@@ -41,42 +39,18 @@ export var AnnotationLayerInternal = /*#__PURE__*/function (_PureComponent) {
       annotations: null
     });
 
-    _defineProperty(_assertThisInitialized(_this), "loadAnnotations", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      var page, cancellable, annotations;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              page = _this.props.page;
-              _context.prev = 1;
-              cancellable = makeCancellable(page.getAnnotations());
-              _this.runningTask = cancellable;
-              _context.next = 6;
-              return cancellable.promise;
-
-            case 6:
-              annotations = _context.sent;
-
-              _this.setState({
-                annotations: annotations
-              }, _this.onLoadSuccess);
-
-              _context.next = 13;
-              break;
-
-            case 10:
-              _context.prev = 10;
-              _context.t0 = _context["catch"](1);
-
-              _this.onLoadError(_context.t0);
-
-            case 13:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[1, 10]]);
-    })));
+    _defineProperty(_assertThisInitialized(_this), "loadAnnotations", function () {
+      var page = _this.props.page;
+      var cancellable = makeCancellable(page.getAnnotations());
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (annotations) {
+        _this.setState({
+          annotations: annotations
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.onLoadError(error);
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "onLoadSuccess", function () {
       var onGetAnnotationsSuccess = _this.props.onGetAnnotationsSuccess;
@@ -177,8 +151,8 @@ export var AnnotationLayerInternal = /*#__PURE__*/function (_PureComponent) {
 
       return /*#__PURE__*/React.createElement("div", {
         className: "react-pdf__Page__annotations annotationLayer",
-        ref: function ref(_ref2) {
-          _this2.annotationLayer = _ref2;
+        ref: function ref(_ref) {
+          _this2.annotationLayer = _ref;
         }
       }, this.renderAnnotationLayer());
     }

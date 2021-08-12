@@ -11,10 +11,6 @@ exports["default"] = exports.AnnotationLayerInternal = void 0;
 
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -67,42 +63,18 @@ var AnnotationLayerInternal = /*#__PURE__*/function (_PureComponent) {
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "state", {
       annotations: null
     });
-    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadAnnotations", /*#__PURE__*/(0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-      var page, cancellable, annotations;
-      return _regenerator["default"].wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              page = _this.props.page;
-              _context.prev = 1;
-              cancellable = (0, _makeCancellablePromise["default"])(page.getAnnotations());
-              _this.runningTask = cancellable;
-              _context.next = 6;
-              return cancellable.promise;
-
-            case 6:
-              annotations = _context.sent;
-
-              _this.setState({
-                annotations: annotations
-              }, _this.onLoadSuccess);
-
-              _context.next = 13;
-              break;
-
-            case 10:
-              _context.prev = 10;
-              _context.t0 = _context["catch"](1);
-
-              _this.onLoadError(_context.t0);
-
-            case 13:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[1, 10]]);
-    })));
+    (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "loadAnnotations", function () {
+      var page = _this.props.page;
+      var cancellable = (0, _makeCancellablePromise["default"])(page.getAnnotations());
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (annotations) {
+        _this.setState({
+          annotations: annotations
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.onLoadError(error);
+      });
+    });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "onLoadSuccess", function () {
       var onGetAnnotationsSuccess = _this.props.onGetAnnotationsSuccess;
       var annotations = _this.state.annotations;
@@ -198,8 +170,8 @@ var AnnotationLayerInternal = /*#__PURE__*/function (_PureComponent) {
 
       return /*#__PURE__*/_react["default"].createElement("div", {
         className: "react-pdf__Page__annotations annotationLayer",
-        ref: function ref(_ref2) {
-          _this2.annotationLayer = _ref2;
+        ref: function ref(_ref) {
+          _this2.annotationLayer = _ref;
         }
       }, this.renderAnnotationLayer());
     }

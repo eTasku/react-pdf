@@ -1,5 +1,3 @@
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 
@@ -19,16 +17,16 @@ import _createClass from "@babel/runtime/helpers/esm/createClass";
  */
 
 /* eslint-disable class-methods-use-this, no-empty-function */
-var SimpleLinkService = /*#__PURE__*/function () {
-  function SimpleLinkService() {
-    _classCallCheck(this, SimpleLinkService);
+var LinkService = /*#__PURE__*/function () {
+  function LinkService() {
+    _classCallCheck(this, LinkService);
 
     this.externalLinkTarget = null;
     this.externalLinkRel = null;
     this.externalLinkEnabled = true;
   }
 
-  _createClass(SimpleLinkService, [{
+  _createClass(LinkService, [{
     key: "setDocument",
     value: function setDocument(pdfDocument) {
       this.pdfDocument = pdfDocument;
@@ -43,79 +41,44 @@ var SimpleLinkService = /*#__PURE__*/function () {
     value: function setHistory() {}
   }, {
     key: "goToDestination",
-    value: function () {
-      var _goToDestination = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(dest) {
-        var destRef, pageNumber, pageIndex;
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                destRef = dest[0];
+    value: function goToDestination(dest) {
+      var _this = this;
 
-                if (!(destRef instanceof Object)) {
-                  _context.next = 14;
-                  break;
-                }
+      new Promise(function (resolve) {
+        if (typeof dest === 'string') {
+          _this.pdfDocument.getDestination(dest).then(resolve);
+        } else {
+          dest.then(resolve);
+        }
+      }).then(function (explicitDest) {
+        if (!Array.isArray(explicitDest)) {
+          throw new Error("\"".concat(explicitDest, "\" is not a valid destination array."));
+        }
 
-                _context.prev = 2;
-                _context.next = 5;
-                return this.pdfDocument.getPageIndex(destRef);
-
-              case 5:
-                pageIndex = _context.sent;
-                pageNumber = pageIndex + 1;
-                _context.next = 12;
-                break;
-
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](2);
-                throw new Error("\"".concat(destRef, "\" is not a valid destination reference."));
-
-              case 12:
-                _context.next = 19;
-                break;
-
-              case 14:
-                if (!(typeof destRef === 'number')) {
-                  _context.next = 18;
-                  break;
-                }
-
-                pageNumber = destRef + 1;
-                _context.next = 19;
-                break;
-
-              case 18:
-                throw new Error("\"".concat(destRef, "\" is not a valid destination reference."));
-
-              case 19:
-                if (!(!pageNumber || pageNumber < 1 || pageNumber > this.pagesCount)) {
-                  _context.next = 21;
-                  break;
-                }
-
-                throw new Error("\"".concat(pageNumber, "\" is not a valid page number."));
-
-              case 21:
-                this.pdfViewer.scrollPageIntoView({
-                  pageNumber: pageNumber
-                });
-
-              case 22:
-              case "end":
-                return _context.stop();
-            }
+        var destRef = explicitDest[0];
+        new Promise(function (resolve) {
+          if (destRef instanceof Object) {
+            _this.pdfDocument.getPageIndex(destRef).then(function (pageIndex) {
+              resolve(pageIndex + 1);
+            })["catch"](function () {
+              throw new Error("\"".concat(destRef, "\" is not a valid page reference."));
+            });
+          } else if (typeof destRef === 'number') {
+            resolve(destRef + 1);
+          } else {
+            throw new Error("\"".concat(destRef, "\" is not a valid destination reference."));
           }
-        }, _callee, this, [[2, 9]]);
-      }));
+        }).then(function (pageNumber) {
+          if (!pageNumber || pageNumber < 1 || pageNumber > _this.pagesCount) {
+            throw new Error("\"".concat(pageNumber, "\" is not a valid page number."));
+          }
 
-      function goToDestination(_x) {
-        return _goToDestination.apply(this, arguments);
-      }
-
-      return goToDestination;
-    }()
+          _this.pdfViewer.scrollPageIntoView({
+            pageNumber: pageNumber
+          });
+        });
+      });
+    }
   }, {
     key: "navigateTo",
     value: function navigateTo(dest) {
@@ -174,7 +137,7 @@ var SimpleLinkService = /*#__PURE__*/function () {
     set: function set(value) {}
   }]);
 
-  return SimpleLinkService;
+  return LinkService;
 }();
 
-export { SimpleLinkService as default };
+export { LinkService as default };

@@ -14,7 +14,7 @@ export var eventProps = function () {
 /* eslint-disable react/forbid-prop-types */
 
 var fileTypes = [PropTypes.string, PropTypes.instanceOf(ArrayBuffer), PropTypes.shape({
-  data: PropTypes.object,
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   httpHeaders: PropTypes.object,
   range: PropTypes.object,
   url: PropTypes.string,

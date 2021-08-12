@@ -165,7 +165,7 @@ PageSVGInternal.propTypes = {
   onRenderSuccess: _propTypes["default"].func,
   page: _propTypes2.isPage.isRequired,
   rotate: _propTypes2.isRotate,
-  scale: _propTypes["default"].number
+  scale: _propTypes["default"].number.isRequired
 };
 
 function PageSVG(props) {

@@ -1,6 +1,4 @@
 import _extends from "@babel/runtime/helpers/esm/extends";
-import _regeneratorRuntime from "@babel/runtime/regenerator";
-import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import _classCallCheck from "@babel/runtime/helpers/esm/classCallCheck";
 import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _assertThisInitialized from "@babel/runtime/helpers/esm/assertThisInitialized";
@@ -47,53 +45,29 @@ export var OutlineInternal = /*#__PURE__*/function (_PureComponent) {
       outline: null
     });
 
-    _defineProperty(_assertThisInitialized(_this), "loadOutline", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
-      var pdf, cancellable, outline;
-      return _regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              pdf = _this.props.pdf;
+    _defineProperty(_assertThisInitialized(_this), "loadOutline", function () {
+      var pdf = _this.props.pdf;
 
-              _this.setState(function (prevState) {
-                if (!prevState.outline) {
-                  return null;
-                }
-
-                return {
-                  outline: null
-                };
-              });
-
-              _context.prev = 2;
-              cancellable = makeCancellable(pdf.getOutline());
-              _this.runningTask = cancellable;
-              _context.next = 7;
-              return cancellable.promise;
-
-            case 7:
-              outline = _context.sent;
-
-              _this.setState({
-                outline: outline
-              }, _this.onLoadSuccess);
-
-              _context.next = 14;
-              break;
-
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](2);
-
-              _this.onLoadError(_context.t0);
-
-            case 14:
-            case "end":
-              return _context.stop();
-          }
+      _this.setState(function (prevState) {
+        if (!prevState.outline) {
+          return null;
         }
-      }, _callee, null, [[2, 11]]);
-    })));
+
+        return {
+          outline: null
+        };
+      });
+
+      var cancellable = makeCancellable(pdf.getOutline());
+      _this.runningTask = cancellable;
+      cancellable.promise.then(function (outline) {
+        _this.setState({
+          outline: outline
+        }, _this.onLoadSuccess);
+      })["catch"](function (error) {
+        _this.onLoadError(error);
+      });
+    });
 
     _defineProperty(_assertThisInitialized(_this), "onLoadSuccess", function () {
       var onLoadSuccess = _this.props.onLoadSuccess;
@@ -111,9 +85,9 @@ export var OutlineInternal = /*#__PURE__*/function (_PureComponent) {
       if (onLoadError) onLoadError(error);
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onItemClick", function (_ref2) {
-      var pageIndex = _ref2.pageIndex,
-          pageNumber = _ref2.pageNumber;
+    _defineProperty(_assertThisInitialized(_this), "onItemClick", function (_ref) {
+      var pageIndex = _ref.pageIndex,
+          pageNumber = _ref.pageNumber;
       var onItemClick = _this.props.onItemClick;
 
       if (onItemClick) {
