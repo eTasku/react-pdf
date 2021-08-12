@@ -27,11 +27,11 @@ Object.defineProperty(exports, "Page", {
 });
 exports.pdfjs = void 0;
 
-var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy/build"));
+var pdfjs = _interopRequireWildcard(require("pdfjs-dist/legacy/build/pdf"));
 
 exports.pdfjs = pdfjs;
 
-var _pdf = _interopRequireDefault(require("file-loader!pdfjs-dist/legacy/build/build/pdf.worker"));
+var _pdfWorker = _interopRequireDefault(require("file-loader!pdfjs-dist/legacy/build/pdf.worker.js"));
 
 var _Document = _interopRequireDefault(require("./Document"));
 
@@ -46,4 +46,4 @@ if (_utils.isLocalFileSystem) {
   (0, _utils.warnOnDev)('You are running React-PDF from your local file system. PDF.js Worker may fail to load due to browser\'s security policies. If you\'re on Google Chrome, you can use --allow-file-access-from-files flag for debugging purposes.');
 }
 
-pdfjs.GlobalWorkerOptions.workerSrc = _pdf["default"];
+pdfjs.GlobalWorkerOptions.workerSrc = _pdfWorker["default"];
